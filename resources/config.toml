@@ -1,0 +1,10 @@
+nodes_number = 5
+queue_capacity = 100
+ticks = 100_000
+output_file = "states.json"
+
+[producing_distribution]
+lambda = 0.01
+
+[consuming_distribution]
+exponential =  { lambda = 0.15 }
