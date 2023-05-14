@@ -1,13 +1,10 @@
 use clap::Parser;
 use cli::Cli;
 
+mod actions;
 mod cli;
 mod config;
-mod distributions;
-mod node;
-mod queue;
-mod request;
-mod system;
+mod stats;
 
 fn main() -> eyre::Result<()> {
     let cli = Cli::parse();

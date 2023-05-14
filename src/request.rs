@@ -1,30 +1,32 @@
-use serde::{Deserialize, Serialize};
+use std::sync::atomic::{AtomicU64, Ordering};
 
-///! A model that represents request accepted by queueing system.
-#[derive(Debug, Clone, Deserialize, Serialize, PartialEq, Eq)]
+/// Represents request that is processed by the system.
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Request {
-    ///! Unique identifier of the request.
+    /// Unique identifier of the request.
     pub id: u64,
 
-    ///! The time needed for node to process the request.
-    pub ticks_to_finish: u64,
+    /// Time required to process [`Requset`].
+    pub time_to_finish: f64,
 
-    ///! Amount of ticks request has been waiting in the queue.
-    pub ticks_in_queue: u64,
+    /// Time that request was created.
+    pub created_at: f64,
+
+    /// Time when request was processed
+    pub started_at: Option<f64>,
 }
 
-impl Request {
-    ///! Creates new request with given ticks to finish.
-    pub fn new(id: u64, ticks_to_finish: u64) -> Self {
-        Self {
-            id,
-            ticks_to_finish,
-            ticks_in_queue: 0,
-        }
-    }
+impl Eq for Request {}
 
-    ///! Increment ticks in queue.
-    pub(crate) fn tick(&mut self) {
-        self.ticks_in_queue += 1;
+static ID_COUNTER: AtomicU64 = AtomicU64::new(0);
+
+impl Request {
+    pub fn new(time_to_finish: f64, created_at: f64) -> Self {
+        Self {
+            id: ID_COUNTER.fetch_add(1, Ordering::SeqCst),
+            time_to_finish,
+            created_at,
+            started_at: None,
+        }
     }
 }

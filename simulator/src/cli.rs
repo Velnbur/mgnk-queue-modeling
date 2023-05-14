@@ -4,13 +4,19 @@ use clap::{Parser, Subcommand};
 use console::{style, Emoji};
 use eyre::Context;
 use indicatif::{ProgressBar, ProgressStyle};
+use simplelog::{CombinedLogger, LevelFilter, WriteLogger};
 
-use crate::{config::Config, system::System};
+use crate::{actions, config::Config};
 
 #[derive(Parser, Debug)]
 pub(crate) struct Cli {
+    /// Path to config file
     #[arg(short = 'c', default_value = "PathBuf::from(\"./config.toml\")")]
     pub(crate) config: PathBuf,
+
+    /// Use debug mode. (Will write logs to `debug.log`).
+    #[arg(short = 'd')]
+    pub(crate) debug_mode: bool,
 
     #[command(subcommand)]
     pub(crate) command: Commands,
@@ -24,54 +30,49 @@ pub(crate) enum Commands {
 static TRUCK: Emoji<'_, '_> = Emoji("🚚  ", "->");
 static FILE: Emoji<'_, '_> = Emoji("🗄", "->");
 
+const LOG_FILE: &str = "debug.log";
+
 impl Cli {
     pub(crate) fn run(self) -> eyre::Result<()> {
         let config = Config::from_file(self.config)?;
 
+        if self.debug_mode {
+            CombinedLogger::init(vec![WriteLogger::new(
+                LevelFilter::Debug,
+                simplelog::Config::default(),
+                File::create(LOG_FILE)
+                    .map_err(|err| eyre::eyre!("Failed to open file {LOG_FILE}: {err}"))?,
+            )])
+            .expect("Logger should always be initialized");
+        }
+
         match self.command {
             Commands::Run => {
-                let pb = ProgressBar::new(config.ticks as u64);
-
-                let mut system = System::new(
-                    config.nodes_number,
-                    config.queue_capacity,
-                    config.producer.consuming_distribution.into(),
-                    config.producer.producing_distribution.into(),
-                );
-                let mut states = Vec::with_capacity(config.ticks as usize);
-
                 println!(
-                    "{} {}Running simulation...",
+                    "{} {}Running simulations...",
                     style("[1/2]").bold().dim(),
                     TRUCK
                 );
 
-                for _ in 0..=config.ticks {
-                    let state = system.tick();
-                    states.push(state);
+                let output_file = config.output_file.clone();
 
-                    pb.inc(1);
-                }
-
-                pb.finish();
+                let results = actions::run_simulations(config);
 
                 let pb = ProgressBar::new_spinner();
-
                 pb.enable_steady_tick(Duration::from_millis(120));
                 pb.set_style(
                     ProgressStyle::with_template("{msg} {spinner:.blue} ")
                         .unwrap()
                         .tick_strings(&[".  ", ".. ", "...", " ..", "  .", "   "]),
                 );
-                pb.set_message(format!(
-                    "{} {} Writing results to file",
-                    style("[2/2]").bold().dim(),
-                    FILE
-                ));
 
-                let file =
-                    File::create(config.output_file).context("Failed to open `output_file`")?;
-                serde_json::to_writer(file, &states).context("Failed to write to `output_file`")?;
+                println!("{} {}Writing results...", style("[2/2]").bold().dim(), FILE);
+
+                let file = File::create(output_file.clone())
+                    .context(format!("Failed to open/create file: {output_file}"))?;
+
+                serde_json::to_writer(file, &results)
+                    .context(format!("Failed to write results to {output_file}"))?;
             }
         }
         Ok(())
