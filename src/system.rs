@@ -135,8 +135,7 @@ impl System {
     }
 
     fn new_request(&mut self) -> Request {
-        let time_to_finish =
-            self.current_tick + self.request_finish_dsrt.sample(&mut rand::thread_rng());
+        let time_to_finish = self.request_finish_dsrt.sample(&mut rand::thread_rng());
 
         Request::new(time_to_finish, self.current_tick)
     }
