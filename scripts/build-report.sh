@@ -28,10 +28,6 @@ cp "report/report.tex" "build-report/report.tex"
 # Copy references to the build directory.
 cp "report/references.bib" "build-report/references.bib"
 
-# Copy data to the build directory.
-cp "report/data.csv" "build-report/data.csv"
-cp "report/cum_data.csv" "build-report/cum_data.csv"
-
 # Copy images
 mkdir -p "build-report/images"
 cp -r "report/images" "build-report/images"
