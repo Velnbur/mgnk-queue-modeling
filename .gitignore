@@ -1,2 +1,5 @@
 /target
 /Cargo.lock
+/build-report
+**/.auctex-auto
+**/.ipynb_checkpoints

@@ -1,0 +1,260 @@
+output_file = "results.json"
+
+[experiments."10.000"]
+nodes_number = 5
+queue_capacity = 30
+seconds = 1_000_000
+producing_distribution = { expected = 4 }
+consuming_distribution = { degenerate = { expected = 19 } }
+
+# [experiments."15.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 150_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."20.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 200_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."25.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 250_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."30.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 300_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."35.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 350_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."40.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 400_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."45.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 450_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."50.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 50_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."55.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 55_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."60.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 60_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."65.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 65_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."70.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 70_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."75.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 75_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."80.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 80_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."85.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 85_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."90.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 90_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."95.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 95_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."100.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 100_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."150.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 150_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."200.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 200_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."250.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 250_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."300.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 300_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."350.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 350_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."400.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 400_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."450.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 450_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."500.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 500_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."550.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 550_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."600.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 600_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."650.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 650_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."700.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 700_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."750.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 750_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."800.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 800_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."850.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 850_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."900.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 900_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."950.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 950_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { degenerate = { expected = 26 } }
+
+# [experiments."1.000.000"]
+# nodes_number = 5
+# queue_capacity = 30
+# seconds = 1_000_000
+# producing_distribution = { expected = 4 }
+# consuming_distribution = { exponential = { expected = 26 } }

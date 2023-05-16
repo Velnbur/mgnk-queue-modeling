@@ -89,7 +89,7 @@ impl System {
     fn handle_event(&mut self, event: Event) {
         let Event {
             time,
-            request,
+            mut request,
             r#type,
         } = event;
 
@@ -102,6 +102,7 @@ impl System {
                 if self.queue.capacity() == self.queue.len() {
                     return;
                 }
+                request.created_at = Some(self.current_tick);
                 self.queue.push_back(request);
             }
             EventType::Departure => {
@@ -137,7 +138,7 @@ impl System {
     fn new_request(&mut self) -> Request {
         let time_to_finish = self.request_finish_dsrt.sample(&mut rand::thread_rng());
 
-        Request::new(time_to_finish, self.current_tick)
+        Request::new(time_to_finish)
     }
 
     fn produce_departure(&mut self, request: Request) {

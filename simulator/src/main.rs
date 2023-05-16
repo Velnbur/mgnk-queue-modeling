@@ -2,6 +2,7 @@ use clap::Parser;
 use cli::Cli;
 
 mod actions;
+mod broadcaster;
 mod cli;
 mod config;
 mod stats;
