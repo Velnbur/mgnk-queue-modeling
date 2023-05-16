@@ -19,7 +19,7 @@ pub struct System {
     request_finish_dsrt: ConsumingDistribution,
     request_arrival_dsrt: ProducingDistribution,
 
-    finished_requests: Vec<Request>,
+    finished_requests: Option<Request>,
 }
 
 #[derive(Debug, Default)]
@@ -29,7 +29,7 @@ pub struct Stats {
     /// Sum of requests in queue + requests that are being processed.
     pub requests_in_system: usize,
     /// Finished requests:
-    pub finished_requests: Vec<Request>,
+    pub finished_request: Option<Request>,
 }
 
 impl System {
@@ -45,7 +45,7 @@ impl System {
             nodes_busy: 0,
             events_queue: EventsQueue::new(),
             queue: VecDeque::with_capacity(queue_capacity),
-            finished_requests: Vec::new(),
+            finished_requests: None,
             nodes_number,
             request_finish_dsrt,
             request_arrival_dsrt,
@@ -53,6 +53,7 @@ impl System {
     }
 
     pub fn next(&mut self) -> Stats {
+        self.finished_requests = None;
         if self.events_queue.is_empty() {
             self.produce_arrival();
         }
@@ -78,7 +79,7 @@ impl System {
         let stats = Stats {
             current_tick: self.current_tick,
             requests_in_system: self.queue.len() + self.nodes_busy,
-            finished_requests: self.finished_requests.clone(),
+            finished_request: self.finished_requests,
         };
 
         log::debug!("Stats: {:?}", stats);
@@ -92,11 +93,10 @@ impl System {
             mut request,
             r#type,
         } = event;
+        self.current_tick = time;
 
         match r#type {
             EventType::Arrival => {
-                self.current_tick = time;
-
                 self.produce_arrival();
 
                 if self.queue.capacity() == self.queue.len() {
@@ -106,9 +106,7 @@ impl System {
                 self.queue.push_back(request);
             }
             EventType::Departure => {
-                self.current_tick = time;
-
-                self.finished_requests.push(request);
+                self.finished_requests = Some(request);
                 self.nodes_busy -= 1;
 
                 let Some(mut request) = self.queue.pop_front() else {

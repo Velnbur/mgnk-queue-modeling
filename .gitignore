@@ -3,3 +3,4 @@
 /build-report
 **/.auctex-auto
 **/.ipynb_checkpoints
+notebooks/*.png

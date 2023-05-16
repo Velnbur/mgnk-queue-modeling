@@ -1,9 +1,8 @@
-use std::{path::PathBuf, sync::mpsc::channel};
+use std::sync::mpsc::channel;
 
-use eyre::Context;
 use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use once_cell::sync::Lazy;
-use queuing_system_modeling::system::{Stats, System};
+use queuing_system_modeling::system::System;
 use threadpool::ThreadPool;
 
 use crate::{
@@ -37,39 +36,13 @@ pub(crate) fn run_simulation(
         ..
     } = config;
 
-    // This vector required for calculating stationary distribution.
-    // Each element is a probability of having `i` requests in the system.
-    // let mut p_k = vec![0; nodes_number + queue_capacity + 1];
-
     let mut system = System::new(
         nodes_number,
         queue_capacity,
         producer.consuming_distribution.into(),
         producer.producing_distribution.into(),
     );
-
-    let mut states = Vec::new();
-    let mut last_state = Stats::default();
-
-    while last_state.current_tick < seconds {
-        last_state = system.next();
-        let last_cumulative_states = states
-            .iter()
-            .map(|s: &SysState| s.system_requests)
-            .collect::<Vec<_>>();
-
-        let state = SysState::new(
-            last_state.current_tick,
-            last_state.requests_in_system,
-            last_state.finished_requests,
-            last_cumulative_states,
-        );
-
-        states.push(state);
-
-        pb.set_position(last_state.current_tick as u64);
-    }
-    pb.finish();
+    let mut current_time = 0.0;
 
     let mut wrt = csv::Writer::from_path(format!("{}.csv", name)).unwrap();
 
@@ -77,19 +50,27 @@ pub(crate) fn run_simulation(
         "seconds",
         "requests_in_system",
         "waiting_mean",
-        "queue_length_mean",
+        "reqs_in_system_mean",
     ])
     .unwrap();
 
-    for state in states.iter() {
-        wrt.write_record(&[
-            state.time.to_string(),
-            state.system_requests.to_string(),
-            state.mean_waiting_time.to_string(),
-            state.mean_queue_length.to_string(),
-        ])
-        .unwrap();
+    let mut last_state = SysState::default();
+
+    while current_time < seconds {
+        let state = system.next();
+        current_time = state.current_tick;
+
+        last_state.next(
+            current_time,
+            state.requests_in_system,
+            state.finished_request,
+        );
+
+        pb.set_position(current_time as u64);
+
+        wrt.write_record(last_state.to_strings()).unwrap();
     }
+    pb.finish();
 }
 
 ///! Run multiple simulation in parallel
@@ -119,12 +100,12 @@ pub(crate) fn run_simulations(config: Config) {
         });
     }
 
-    ctrlc::set_handler(move || {
-        stop_tx.send(()).expect("Failed to send stop signal");
-    })
-    .expect("Error setting Ctrl-C handler");
+    // ctrlc::set_handler(move || {
+    //     stop_tx.send(()).expect("Failed to send stop signal");
+    // })
+    // .expect("Error setting Ctrl-C handler");
 
-    rx.iter().take(experiments_number).collect::<()>();
+    let _ = rx.iter().take(experiments_number).collect::<Vec<()>>();
 }
 
 // /// Convert results to csv

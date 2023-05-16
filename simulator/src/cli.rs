@@ -6,10 +6,7 @@ use eyre::Context;
 use indicatif::{ProgressBar, ProgressStyle};
 use simplelog::{CombinedLogger, LevelFilter, WriteLogger};
 
-use crate::{
-    actions::{self},
-    config::Config,
-};
+use crate::{actions, config::Config};
 
 #[derive(Parser, Debug)]
 pub(crate) struct Cli {
@@ -29,20 +26,20 @@ pub(crate) enum Commands {
         #[arg(short = 'c', default_value = "PathBuf::from(\"./config.toml\")")]
         config: PathBuf,
     },
-    /// Convert results from json to csv
-    Convert {
-        /// Path to file with results
-        #[arg(short = 'i', default_value = "PathBuf::from(\"./results.json\")")]
-        input: PathBuf,
+    // Convert results from json to csv
+    // Convert {
+    //     /// Path to file with results
+    //     #[arg(short = 'i', default_value = "PathBuf::from(\"./results.json\")")]
+    //     input: PathBuf,
 
-        /// Path to output stats file
-        #[arg(short = 'o', default_value = "PathBuf::from(\"./stats.csv\")")]
-        output_stats: PathBuf,
+    //     /// Path to output stats file
+    //     #[arg(short = 'o', default_value = "PathBuf::from(\"./stats.csv\")")]
+    //     output_stats: PathBuf,
 
-        /// Path to output distributions file
-        #[arg(short = 'd', default_value = "PathBuf::from(\"./distributions.csv\")")]
-        output_distributions: PathBuf,
-    },
+    //     /// Path to output distributions file
+    //     #[arg(short = 'd', default_value = "PathBuf::from(\"./distributions.csv\")")]
+    //     output_distributions: PathBuf,
+    // },
 }
 
 static TRUCK: Emoji<'_, '_> = Emoji("🚚  ", "->");
@@ -92,15 +89,6 @@ impl Cli {
 
                 serde_json::to_writer(file, &results)
                     .context(format!("Failed to write results to {output_file}"))?;
-            }
-            Commands::Convert {
-                input: input_path,
-                output_stats: output_stats_path,
-                output_distributions: output_distributions_path,
-            } => {
-                unimplemented!()
-                // convert_to_csv(input_path, output_stats_path, output_distributions_path)
-                //     .context("Failed to convert to csv")?;
             }
         }
         Ok(())
